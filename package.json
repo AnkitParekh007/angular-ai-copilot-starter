@@ -1,0 +1,29 @@
+{
+  "name": "angular-ai-copilot-starter",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Angular AI copilot starter with streaming chat UX, RAG source cards, tool-call timeline, action approvals, mock MCP tools, and enterprise agent modes.",
+  "scripts": {
+    "start": "ng serve",
+    "build": "ng build",
+    "test": "ng test",
+    "lint": "ng lint"
+  },
+  "dependencies": {
+    "@angular/animations": "^20.3.0",
+    "@angular/common": "^20.3.0",
+    "@angular/compiler": "^20.3.0",
+    "@angular/core": "^20.3.0",
+    "@angular/forms": "^20.3.0",
+    "@angular/platform-browser": "^20.3.0",
+    "@angular/router": "^20.3.0",
+    "rxjs": "^7.8.1",
+    "tslib": "^2.6.0",
+    "zone.js": "^0.15.0"
+  },
+  "devDependencies": {
+    "@angular/cli": "^20.3.13",
+    "@angular/compiler-cli": "^20.3.0",
+    "typescript": "~5.8.0"
+  }
+}
