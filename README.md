@@ -1,62 +1,77 @@
 # Angular AI Copilot Starter
 
+![Angular](https://img.shields.io/badge/Angular-20-red) ![TypeScript](https://img.shields.io/badge/TypeScript-Strict-blue) ![Mock AI](https://img.shields.io/badge/AI-Mock%20Only-green) ![Status](https://img.shields.io/badge/Status-Public%20Proof%20Demo-informational)
+
 Angular AI copilot starter with streaming chat UX, RAG source cards, tool-call timeline, action approvals, mock MCP tools, and enterprise agent modes.
 
-## What This Project Demonstrates
+![Preview placeholder](docs/assets/screenshots/copilot-shell.png)
 
-This public proof project shows how an enterprise Angular application can embed a serious AI copilot experience without exposing real LLM keys or private workflows. It focuses on UI architecture, typed state models, mocked backend contracts, and recruiter-friendly documentation.
+**Live demo:** [add deployed demo URL]
 
-## Screenshots
+## What This Is
 
-See `docs/screenshots.md` for screenshot placeholders and capture guidance.
+A recruiter-friendly Angular proof project showing how an enterprise application can embed a serious AI copilot UI without exposing real model keys or private data. The app uses mock services and typed state models to demonstrate the frontend architecture.
+
+## Why It Matters
+
+Enterprise copilots need more than a chat box. They need visible context, grounded sources, tool execution status, approval gates, and recovery states that users can trust.
 
 ## Features
 
-- Codex-style copilot layout.
-- Collapsible session sidebar.
+- Three-panel copilot shell with session sidebar, message thread, and context/tool panel.
 - Agent modes: Ask, Plan, Execute, Debug.
-- Streaming response UX.
-- RAG source cards.
-- Tool-call timeline.
-- Action approval cards.
-- Mock MCP tools.
-- Execution status states: idle, thinking, retrieving_context, planning, awaiting_approval, executing_tool, completed, failed, recovering.
-- Enterprise-safe UX patterns with approval gates and visible audit-friendly state.
+- Mock streaming response surface.
+- RAG source cards with source type, snippet, and confidence.
+- Tool-call timeline for MCP-style actions.
+- Action approval card for workflow-changing operations.
+- Execution status pills for thinking, retrieving context, planning, awaiting approval, executing, completed, failed, and recovering.
+- Mock-only services. No API keys required.
 
 ## Architecture
 
 ```mermaid
 flowchart LR
     User["Enterprise user"] --> Shell["Copilot shell"]
-    Shell --> Session["Session sidebar"]
+    Shell --> Sessions["Session sidebar"]
     Shell --> Thread["Message thread"]
-    Shell --> Composer["Message composer"]
-    Composer --> CopilotService["Copilot service"]
-    CopilotService --> Stream["Streaming message service"]
-    CopilotService --> RAG["Mock RAG service"]
-    CopilotService --> Tools["Mock tool registry"]
-    Tools --> Timeline["Tool call timeline"]
-    RAG --> Sources["RAG source cards"]
-    Tools --> Approval["Action approval card"]
+    Shell --> Context["Context and tool panel"]
+    Thread --> Composer["Message composer"]
+    Composer --> CopilotService["CopilotService"]
+    CopilotService --> Streaming["StreamingMessageService"]
+    CopilotService --> RAG["MockRagService"]
+    CopilotService --> Tools["MockToolRegistryService"]
+    RAG --> SourceCards["RAG source cards"]
+    Tools --> Timeline["Tool-call timeline"]
+    Timeline --> Approval["Action approval card"]
 ```
 
 ## Tech Stack
 
-- Angular
-- TypeScript
+- Angular 20
+- TypeScript strict mode
 - RxJS
-- Mock services instead of real LLM providers
-- Mermaid architecture docs
+- Standalone components
+- Mock RAG/tool services
+- Mermaid documentation
 
 ## Folder Structure
 
 ```text
-src/app/copilot/
-  components/
-  services/
-  models/
-  mocks/
+src/app/
+  app.component.ts
+  copilot/
+    components/
+    models/
+    mocks/
+    services/
 docs/
+  assets/screenshots/
+  architecture.md
+  demo-script.md
+  deployment.md
+  interview-talking-points.md
+  recruiter-notes.md
+WHAT_THIS_PROVES.md
 ```
 
 ## How To Run
@@ -66,23 +81,47 @@ npm install
 npm start
 ```
 
-This repo currently uses mock data only. No API key is required.
+Build check:
 
-## Demo Script
+```bash
+npm run build
+```
 
-See `docs/demo-script.md`.
+## Demo Walkthrough
+
+1. Open the shell and scan the session sidebar.
+2. Switch between Ask, Plan, Execute, and Debug modes.
+3. Review the mock streaming assistant response.
+4. Inspect RAG source cards for grounding evidence.
+5. Review the tool-call timeline and approval card.
+6. Discuss how this maps to backend-governed MCP tools in production.
 
 ## Recruiter Value
 
-This repo proves that Ankit can reason about AI-native Angular UI architecture: streaming state, RAG evidence, tool execution visibility, approval controls, and enterprise-safe interaction design.
+This repo proves Angular AI frontend architecture: composable UI zones, typed models, visible agent state, RAG evidence, tool execution UX, and enterprise approval flows.
+
+## Interview Talking Points
+
+- Why enterprise copilots need visible tool execution and approval gates.
+- How RxJS can support streaming response UI.
+- Why RAG sources should be rendered as inspectable evidence.
+- How agent modes change UX and safety expectations.
+- Why provider secrets and real tools belong behind backend APIs.
+
+## Deployment
+
+See [docs/deployment.md](docs/deployment.md) for GitHub Pages, Vercel, and Netlify options.
 
 ## Roadmap
 
-- Add polished Angular screens for each component.
-- Add screenshot assets.
-- Add unit tests for stream and state transitions.
-- Add a backend proxy example without committing secrets.
+- Capture real screenshots and replace placeholders.
+- Add component-level tests for status and approval states.
+- Add optional backend proxy example with no committed secrets.
+- Add GitHub Pages deployment workflow after demo URL is confirmed.
 
 ## Author
 
-Ankit Parekh - AI Frontend Architect building enterprise Angular and TypeScript applications with embedded AI copilots and agentic workflows.
+Ankit Parekh
+
+- GitHub: https://github.com/AnkitParekh007
+- Portfolio: https://ankitparekh007.github.io/resume/
