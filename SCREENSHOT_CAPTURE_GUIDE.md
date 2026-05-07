@@ -7,34 +7,61 @@ npm install
 npm start
 ```
 
-Open the local URL printed by Angular CLI.
+Open the local Angular URL printed by the CLI.
 
-## Screen States To Capture
-
-1. `copilot-shell-light.png` - default shell before interaction.
-2. `copilot-shell-dark.png` - shell after using the theme toggle.
-3. `streaming-message.png` - message streaming after clicking Run Demo Flow.
-4. `rag-source-cards.png` - RAG source cards after retrieval.
-5. `tool-call-timeline.png` - MCP/tool timeline after planning.
-6. `action-approval-flow.png` - approval card before approving.
-7. `agent-mode-selector.png` - agent modes visible near the top.
-8. `responsive-mobile.png` - mobile viewport layout.
-
-## Recommended Browser Sizes
+## Recommended Sizes
 
 - README hero: 1600x900
 - Feature screenshots: 1200x800
-- Mobile: 390x844
+- Mobile screenshot: 390x844
 - GIF demo: 8-12 seconds
+
+## App States To Capture
+
+1. `copilot-shell-light.png`
+   - Use the default light theme.
+   - Capture the full three-panel shell.
+
+2. `copilot-shell-dark.png`
+   - Toggle dark theme.
+   - Capture the full three-panel shell.
+
+3. `streaming-message.png`
+   - Click **Run Demo Flow**.
+   - Capture while the assistant message is streaming.
+
+4. `rag-source-cards.png`
+   - Wait until RAG sources appear.
+   - Capture the right panel.
+
+5. `tool-call-timeline.png`
+   - Wait until tool calls appear.
+   - Capture the timeline section.
+
+6. `action-approval-flow.png`
+   - Wait for the approval card.
+   - Capture before approving or rejecting.
+
+7. `responsive-mobile.png`
+   - Resize browser to 390x844.
+   - Capture the responsive layout.
 
 ## Save Location
 
-Save screenshots to:
+Save all PNG files to:
 
 ```text
 docs/assets/screenshots/
 ```
 
-## README Update
+## Update README
 
-Replace the placeholder image paths in `README.md` after screenshots are captured. Keep filenames stable so existing README links do not break.
+The README already references these filenames. Replace the placeholder PNG files
+with real captured screenshots using the same names.
+
+## LinkedIn And Portfolio Usage
+
+- Use `copilot-shell-light.png` as the LinkedIn hero image.
+- Use `tool-call-timeline.png` for a post about MCP/tool execution UX.
+- Use `action-approval-flow.png` for a post about enterprise guardrails.
+- Use `responsive-mobile.png` to show frontend quality and polish.

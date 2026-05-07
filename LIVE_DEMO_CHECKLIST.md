@@ -1,8 +1,8 @@
 # Live Demo Checklist
 
-- [ ] `npm install` completes
+- [x] `npm install` completes
 - [ ] `npm start` runs locally
-- [ ] `npm run build` passes
+- [x] `npm run build` passes
 - [ ] no API keys required
 - [ ] no backend required
 - [ ] routes work after refresh or fallback is configured
