@@ -35,7 +35,7 @@ import { ThemeService } from './copilot/services/theme.service';
         <section class="session-list" aria-label="Recent sessions">
           <button class="session-card active" *ngFor="let session of sessions" type="button">
             <strong>{{ session.title }}</strong>
-            <span>{{ session.mode }} mode Â· {{ session.messageCount }} messages</span>
+            <span>{{ session.mode }} mode - {{ session.messageCount }} messages</span>
           </button>
         </section>
 
@@ -74,9 +74,9 @@ import { ThemeService } from './copilot/services/theme.service';
           <article class="message" *ngFor="let message of messages()" [class.assistant]="message.role === 'assistant'">
             <div class="message-meta">
               <span>{{ message.role }}</span>
-              <small>{{ message.mode }} Â· {{ message.state }}</small>
+              <small>{{ message.mode }} - {{ message.state }}</small>
             </div>
-            <p>{{ message.content || 'Thinkingâ€¦' }}</p>
+            <p>{{ message.content || 'Thinking...' }}</p>
           </article>
         </section>
 
@@ -95,7 +95,7 @@ import { ThemeService } from './copilot/services/theme.service';
           </div>
           <dl>
             <div><dt>Route</dt><dd>{{ context.route }}</dd></div>
-            <div><dt>Record</dt><dd>{{ context.selectedRecordType }} Â· {{ context.selectedRecordId }}</dd></div>
+            <div><dt>Record</dt><dd>{{ context.selectedRecordType }} - {{ context.selectedRecordId }}</dd></div>
             <div><dt>Role</dt><dd>{{ context.userRole }}</dd></div>
             <div><dt>Tenant</dt><dd>{{ context.tenant }}</dd></div>
           </dl>
@@ -131,7 +131,7 @@ import { ThemeService } from './copilot/services/theme.service';
               <span class="timeline-dot" [ngClass]="tool.status"></span>
               <div>
                 <strong>{{ tool.label }}</strong>
-                <small>{{ tool.status }} Â· {{ tool.type }}</small>
+                <small>{{ tool.status }} - {{ tool.type }}</small>
                 <p>{{ tool.outputSummary || tool.inputSummary }}</p>
               </div>
             </li>
@@ -308,6 +308,8 @@ import { ThemeService } from './copilot/services/theme.service';
     meter { width: 100%; height: 8px; }
     .timeline { list-style: none; padding: 0; margin: 0; display: grid; gap: 13px; }
     .timeline li { display: grid; grid-template-columns: 14px 1fr; gap: 10px; }
+    .timeline strong, .timeline small { display: block; }
+    .timeline small { margin-top: 2px; }
     .timeline-dot { width: 11px; height: 11px; margin-top: 5px; border-radius: 50%; background: var(--muted); }
     .timeline-dot.succeeded { background: var(--success); }
     .timeline-dot.running { background: var(--accent); }
