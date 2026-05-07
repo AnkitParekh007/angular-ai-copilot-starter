@@ -1,14 +1,14 @@
 # Good First Issues
 
-- Add keyboard navigation to copilot shell
+These are practical starter tasks for contributors who want to improve Angular AI frontend examples.
+
 - Add screenshot/GIF to README
-- Add another mock tool type
+- Add dark/light theme toggle
+- Add mobile responsive layout
+- Add another mock MCP tool
 - Improve RAG source card accessibility
-- Add responsive mobile layout
 - Add unit tests for streaming service
 - Add error recovery demo state
-- Add dark/light theme toggle
-
-## Notes
-
-These are contribution ideas, not promises of active maintainer support. Keep PRs small and avoid real secrets or private data.
+- Add keyboard navigation
+- Add Angular Material variant
+- Add PrimeNG variant

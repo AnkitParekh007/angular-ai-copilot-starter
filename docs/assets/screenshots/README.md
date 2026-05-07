@@ -1,12 +1,13 @@
 # Screenshot Checklist
 
-Capture these after running the app locally or deploying it:
+Add screenshots or GIFs that show the repo value within 30 seconds.
 
-- main screen
-- architecture view
+- Main screen
+- Architecture view
 - RAG/source view
-- tool execution view
-- approval flow
-- error/recovery state
+- Tool execution view
+- Approval flow
+- Error/recovery state
+- Mobile/responsive view, if applicable
 
-Replace placeholder PNG files in this folder with real screenshots before final promotion.
+Recommended dimensions: 1600x900 for desktop, 390x844 for mobile, and short 8-15 second GIFs for flows.
