@@ -1,25 +1,36 @@
 # What This Proves
 
-## Angular UI Architecture
+## Technical Proof
 
-The demo organizes an AI copilot into clear Angular UI zones: session navigation, message thread, composer, RAG evidence, tool timeline, and approval state.
+Angular copilot shell with streaming UX, RAG source cards, tool-call timeline, action approvals, mock MCP tools, and enterprise agent modes.
 
-## AI Copilot UX Design
+## Roles It Supports
 
-The UI treats the copilot as a workflow assistant, not a generic chatbot. It supports modes, status states, and contextual evidence.
+AI Frontend Engineer / Angular Architect
 
-## RAG UI Rendering
+## Architecture Patterns Demonstrated
 
-Source cards show how retrieved context can be made inspectable through title, type, snippet, and confidence.
+- Typed Angular models and services.
+- Mock-first AI frontend behavior.
+- User-visible state instead of hidden automation.
+- Documentation that explains intent, tradeoffs, and limitations.
 
-## Tool Execution UX
+## What A Recruiter Should Notice
 
-The tool timeline shows search, route inspection, selected record lookup, workflow execution, navigation, form fill, and submit-style actions.
+This repo is designed to be understandable within 30 seconds and to show practical AI frontend architecture rather than generic demo code.
 
-## Approval Workflow Thinking
+## What A Technical Interviewer Can Ask
 
-The approval card models a safe boundary for workflow-changing actions.
+How would you move mock tool execution behind a secure backend approval layer?
 
-## Enterprise-Safe Agent Modes
+## What Is Mocked Vs Real
 
-Ask, Plan, Execute, and Debug help separate low-risk answers from high-risk action flows.
+- Mocked: AI/model responses, RAG retrieval, tool execution, approvals, and workflow data.
+- Real: Angular project structure, TypeScript models, UI architecture, documentation, and buildable repo scaffold where applicable.
+
+## What Is Not Claimed
+
+- No production users are claimed.
+- No merged upstream PRs are claimed.
+- No private company code or customer data is included.
+- No API keys or provider credentials are required.
