@@ -1,60 +1,68 @@
 # Contributing
 
-Thanks for considering a contribution. This project is a public proof repo for Angular AI frontend architecture, so contributions should stay practical, readable, and interview-safe.
+Thanks for considering a contribution. This repo is a public Angular AI frontend proof project, so contributions should stay practical, readable, mock-only, and interview-safe.
 
-## How To Set Up Locally
+## Setup
 
-`ash
+```bash
 git clone https://github.com/AnkitParekh007/angular-ai-copilot-starter.git
 cd angular-ai-copilot-starter
 npm install
-`
+npm start
+```
 
-Run the available checks documented in the README. If this repo is documentation-only, review Markdown links and examples before opening a PR.
+Build before opening a PR:
 
-## How To Choose An Issue
-
-Start with [GOOD_FIRST_ISSUES.md](GOOD_FIRST_ISSUES.md) or the GitHub issue templates. Good contributions improve clarity, screenshots, accessibility, examples, tests, or mock AI frontend flows.
+```bash
+npm run build
+```
 
 ## Branch Naming
 
-Use a short descriptive branch name:
+Use short, descriptive branch names:
 
-- docs/add-rag-diagram
-- eat/add-approval-state
-- 	est/add-streaming-service-spec
-- 11y/improve-keyboard-navigation
+- `docs/add-rag-diagram`
+- `feat/add-approval-state`
+- `test/add-streaming-service-spec`
+- `a11y/improve-keyboard-navigation`
 
-## Commit Message Style
+## Commit Style
 
 Use clear conventional prefixes:
 
-- docs: improve screenshot checklist
-- eat: add mock tool timeline state
-- 	est: cover context serializer
-- ix: correct README command
+- `docs: improve screenshot guide`
+- `feat: add mock tool state`
+- `test: cover streaming service`
+- `fix: correct README command`
 
-## Code Style Expectations
+## PR Process
 
-- Keep TypeScript strict and readable.
-- Prefer typed models over loose objects.
-- Keep mock data realistic but fictional.
-- Do not add real API keys, provider tokens, private customer data, or .env files.
-- Avoid fake production claims, user counts, stars, testimonials, or benchmarks.
+1. Pick one focused change.
+2. Keep mock data fictional.
+3. Update README/docs if behavior changes.
+4. Include a screenshot or GIF for UI changes when possible.
+5. Document build/test results in the PR.
 
-## Docs Contributions
+## UI Contribution Rules
 
-Docs should help a reader understand the architecture in under 30 seconds. Prefer diagrams, screenshots, small code snippets, and explicit mocked-vs-real boundaries.
+- Keep the three-panel copilot layout readable.
+- Preserve visible state for streaming, retrieving context, planning, approval, tool execution, failure, and recovery.
+- Prefer reusable TypeScript models over loose objects.
+- Do not add heavy UI dependencies without a clear reason.
 
-## UI Contributions
+## Accessibility Expectations
 
-For UI changes, include a screenshot or GIF when possible. Keep enterprise UX states visible: loading, streaming, retrieving context, awaiting approval, executing, completed, failed, and recovering.
+- Use semantic controls for buttons, forms, and navigation.
+- Add labels for inputs and icon-only actions.
+- Preserve keyboard navigation.
+- Keep color contrast readable in light and dark themes.
 
-## Pull Request Checklist
+## Docs Contribution Rules
 
-- [ ] Change is focused and reviewable
-- [ ] No secrets or private data
-- [ ] No fake metrics or production claims
-- [ ] README/docs updated if needed
-- [ ] Screenshot/GIF included for UI changes
-- [ ] Tests or manual verification notes included where practical
+- Make the architecture understandable in under 30 seconds.
+- Be explicit about what is mocked vs real.
+- Do not add fake production claims, fake metrics, user counts, or testimonials.
+
+## No Secrets Rule
+
+Do not commit API keys, provider tokens, `.env` files, credentials, private company code, customer data, or live LLM/provider integrations.

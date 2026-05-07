@@ -4,34 +4,34 @@ Watch this repo if you are interested in Angular-first AI copilot and agentic UI
 
 ## v0.1
 
-- Initial README and architecture skeleton
+- README and architecture skeleton
 - TypeScript models
-- Mock data
-- Basic demo documentation
+- mock data
+- basic Angular demo
 
 ## v0.2
 
-- Visual demo UI
-- Screenshots
-- Live deployment
-- Responsive layout
+- polished visual demo
+- screenshots
+- live deployment
+- responsive layout
 
 ## v0.3
 
-- Accessibility improvements
-- Unit tests
-- More mock tool examples
-- Better RAG source UI
+- accessibility improvements
+- unit tests
+- more mock tools
+- better RAG source UI
 
 ## v0.4
 
 - Storybook or component preview
-- Angular Material/PrimeNG variants
-- More enterprise patterns
+- Angular Material / PrimeNG variants
+- improved documentation
 
 ## v1.0
 
-- Stable demo
-- Docs complete
-- Examples complete
-- Contribution guide complete
+- stable demo
+- complete docs
+- contribution guide complete
+- examples complete

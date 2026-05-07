@@ -5,9 +5,7 @@
   "description": "Angular AI copilot starter with streaming chat UX, RAG source cards, tool-call timeline, action approvals, mock MCP tools, and enterprise agent modes.",
   "scripts": {
     "start": "ng serve",
-    "build": "ng build",
-    "test": "ng test",
-    "lint": "ng lint"
+    "build": "ng build"
   },
   "dependencies": {
     "@angular/animations": "^20.3.0",
