@@ -1,31 +1,44 @@
 import { CommonModule } from '@angular/common';
 import { Component, computed, inject, signal } from '@angular/core';
 import { FormsModule } from '@angular/forms';
-import { AGENT_MODES, AgentMode } from './copilot/models/agent-mode.model';
-import { ActionApproval } from './copilot/models/action-approval.model';
-import { CopilotMessage } from './copilot/models/copilot-message.model';
-import { ExecutionState } from './copilot/models/execution-state.model';
-import { RagSource } from './copilot/models/rag-source.model';
-import { ToolCall } from './copilot/models/tool-call.model';
+import { ActionApprovalCardComponent } from './copilot/components/action-approval-card/action-approval-card.component';
+import { AgentModeSelectorComponent } from './copilot/components/agent-mode-selector/agent-mode-selector.component';
+import { MessageThreadComponent } from './copilot/components/message-thread/message-thread.component';
+import { RagSourceCardComponent } from './copilot/components/rag-source-card/rag-source-card.component';
+import { ToolCallTimelineComponent } from './copilot/components/tool-call-timeline/tool-call-timeline.component';
 import { DEMO_APPROVALS } from './copilot/mocks/demo-approvals';
 import { DEMO_CONTEXT } from './copilot/mocks/demo-context';
 import { DEMO_MESSAGES } from './copilot/mocks/demo-messages';
 import { DEMO_RAG_SOURCES } from './copilot/mocks/demo-rag-sources';
 import { DEMO_SESSIONS } from './copilot/mocks/demo-sessions';
 import { DEMO_TOOL_CALLS } from './copilot/mocks/demo-tool-calls';
+import { AGENT_MODES, AgentMode } from './copilot/models/agent-mode.model';
+import { ActionApproval } from './copilot/models/action-approval.model';
+import { CopilotMessage } from './copilot/models/copilot-message.model';
+import { ExecutionState } from './copilot/models/execution-state.model';
+import { RagSource } from './copilot/models/rag-source.model';
+import { ToolCall } from './copilot/models/tool-call.model';
 import { ThemeService } from './copilot/services/theme.service';
 
 @Component({
   selector: 'app-root',
   standalone: true,
-  imports: [CommonModule, FormsModule],
+  imports: [
+    CommonModule,
+    FormsModule,
+    AgentModeSelectorComponent,
+    MessageThreadComponent,
+    RagSourceCardComponent,
+    ToolCallTimelineComponent,
+    ActionApprovalCardComponent,
+  ],
   template: `
     <main class="copilot-app" [class.dark]="theme.mode() === 'dark'">
       <aside class="session-sidebar" aria-label="Copilot sessions">
         <div class="brand">
           <span class="brand-mark">AI</span>
           <div>
-            <p>Angular starter</p>
+            <p>Angular flagship demo</p>
             <h1>Copilot Workspace</h1>
           </div>
         </div>
@@ -35,53 +48,53 @@ import { ThemeService } from './copilot/services/theme.service';
         <section class="session-list" aria-label="Recent sessions">
           <button class="session-card active" *ngFor="let session of sessions" type="button">
             <strong>{{ session.title }}</strong>
-            <span>{{ session.mode }} mode - {{ session.messageCount }} messages</span>
+            <span>{{ session.mode }} mode · {{ session.messageCount }} messages</span>
           </button>
         </section>
 
         <div class="sidebar-note">
           <strong>Mock-only architecture</strong>
-          <span>No API keys. No backend. All RAG/tool execution is simulated.</span>
+          <span>No API keys. No backend. All RAG retrieval, tool execution, and approvals are simulated on purpose.</span>
         </div>
       </aside>
 
       <section class="conversation" aria-label="Copilot conversation">
         <header class="topbar">
           <div>
-            <p class="eyebrow">Enterprise-safe AI copilot UI</p>
-            <h2>Streaming chat with RAG evidence, MCP tools, and approvals</h2>
+            <p class="eyebrow">Angular AI copilot starter</p>
+            <h2>Streaming chat, grounded sources, tool timeline, and human approval in one recruiter-ready Angular demo.</h2>
           </div>
           <div class="topbar-actions">
             <span class="status-pill" [ngClass]="executionState()">{{ executionLabel() }}</span>
             <button class="theme-toggle" type="button" (click)="theme.toggle()">
-              {{ theme.mode() === 'dark' ? 'Light' : 'Dark' }}
+              {{ theme.mode() === 'dark' ? 'Light mode' : 'Dark mode' }}
             </button>
           </div>
         </header>
 
-        <nav class="mode-tabs" aria-label="Agent modes">
-          <button
-            *ngFor="let mode of modes"
-            type="button"
-            [class.active]="mode.id === activeMode()"
-            (click)="activeMode.set(mode.id)">
-            <strong>{{ mode.label }}</strong>
-            <span>{{ mode.description }}</span>
-          </button>
-        </nav>
-
-        <section class="message-thread" aria-label="Messages">
-          <article class="message" *ngFor="let message of messages()" [class.assistant]="message.role === 'assistant'">
-            <div class="message-meta">
-              <span>{{ message.role }}</span>
-              <small>{{ message.mode }} - {{ message.state }}</small>
-            </div>
-            <p>{{ message.content || 'Thinking...' }}</p>
-          </article>
+        <section class="walkthrough-card">
+          <strong>Demo walkthrough</strong>
+          <p>
+            Switch modes, run the demo, inspect grounded RAG evidence, follow tool planning, and approve the risky action.
+          </p>
         </section>
 
+        <app-agent-mode-selector
+          [modes]="modes"
+          [activeMode]="activeMode()"
+          (modeSelected)="activeMode.set($event)">
+        </app-agent-mode-selector>
+
+        <app-message-thread [messages]="messages()"></app-message-thread>
+
         <form class="composer" (submit)="submitPrompt($event)">
-          <input name="prompt" [(ngModel)]="prompt" aria-label="Prompt" />
+          <label class="visually-hidden" for="prompt">Prompt</label>
+          <input
+            id="prompt"
+            name="prompt"
+            [(ngModel)]="prompt"
+            aria-label="Prompt"
+            placeholder="Ask for the next safe onboarding step, an explanation, or an execution plan." />
           <button type="button" class="secondary" (click)="runDemoFlow()">Run Demo</button>
           <button type="submit">Send</button>
         </form>
@@ -95,7 +108,7 @@ import { ThemeService } from './copilot/services/theme.service';
           </div>
           <dl>
             <div><dt>Route</dt><dd>{{ context.route }}</dd></div>
-            <div><dt>Record</dt><dd>{{ context.selectedRecordType }} - {{ context.selectedRecordId }}</dd></div>
+            <div><dt>Record</dt><dd>{{ context.selectedRecordType }} · {{ context.selectedRecordId }}</dd></div>
             <div><dt>Role</dt><dd>{{ context.userRole }}</dd></div>
             <div><dt>Tenant</dt><dd>{{ context.tenant }}</dd></div>
           </dl>
@@ -106,19 +119,15 @@ import { ThemeService } from './copilot/services/theme.service';
 
         <section class="panel-card">
           <div class="section-title">
-            <p>RAG sources</p>
+            <p>RAG source cards</p>
             <strong>{{ sources().length }} grounded sources</strong>
           </div>
-          <article class="source-card" *ngFor="let source of sources()">
-            <div>
-              <strong>{{ source.title }}</strong>
-              <span>{{ source.sourceType }}</span>
-            </div>
-            <p>{{ source.snippet }}</p>
-            <meter min="0" max="1" [value]="source.confidence"></meter>
-            <small>{{ source.confidence | percent }} confidence</small>
-          </article>
-          <p class="empty" *ngIf="!sources().length">Sources appear after retrieving context.</p>
+          <ng-container *ngIf="sources().length; else sourceEmpty">
+            <app-rag-source-card *ngFor="let source of sources()" [source]="source"></app-rag-source-card>
+          </ng-container>
+          <ng-template #sourceEmpty>
+            <p class="empty">Grounded sources appear after the retrieval stage in the demo flow.</p>
+          </ng-template>
         </section>
 
         <section class="panel-card">
@@ -126,34 +135,19 @@ import { ThemeService } from './copilot/services/theme.service';
             <p>MCP/tool timeline</p>
             <strong>{{ tools().length }} planned calls</strong>
           </div>
-          <ol class="timeline">
-            <li *ngFor="let tool of tools()">
-              <span class="timeline-dot" [ngClass]="tool.status"></span>
-              <div>
-                <strong>{{ tool.label }}</strong>
-                <small>{{ tool.status }} - {{ tool.type }}</small>
-                <p>{{ tool.outputSummary || tool.inputSummary }}</p>
-              </div>
-            </li>
-          </ol>
-          <p class="empty" *ngIf="!tools().length">Tool calls appear after planning.</p>
+          <app-tool-call-timeline [tools]="tools()"></app-tool-call-timeline>
         </section>
 
-        <section class="approval-card" *ngIf="approval() as approvalItem">
-          <p>Human approval</p>
-          <h3>{{ approvalItem.title }}</h3>
-          <span class="risk">Risk: {{ approvalItem.riskLevel }}</span>
-          <p>{{ approvalItem.summary }}</p>
-          <div class="approval-actions">
-            <button type="button" (click)="resolveApproval(true)">Approve mock action</button>
-            <button type="button" class="secondary" (click)="resolveApproval(false)">Reject</button>
-          </div>
-        </section>
+        <app-action-approval-card [approval]="approval()" (decision)="resolveApproval($event)"></app-action-approval-card>
       </aside>
     </main>
   `,
   styles: [`
-    :host { display: block; min-height: 100vh; }
+    :host {
+      display: block;
+      min-height: 100vh;
+    }
+
     .copilot-app {
       --bg: #f5f7fb;
       --panel: #ffffff;
@@ -169,9 +163,13 @@ import { ThemeService } from './copilot/services/theme.service';
       min-height: 100vh;
       display: grid;
       grid-template-columns: 292px minmax(0, 1fr) 390px;
-      background: radial-gradient(circle at top left, rgba(59, 130, 246, .14), transparent 30%), var(--bg);
+      background:
+        radial-gradient(circle at top left, rgba(59, 130, 246, .14), transparent 30%),
+        radial-gradient(circle at top right, rgba(34, 211, 238, .10), transparent 24%),
+        var(--bg);
       color: var(--text);
     }
+
     .copilot-app.dark {
       --bg: #07111f;
       --panel: #101827;
@@ -181,9 +179,38 @@ import { ThemeService } from './copilot/services/theme.service';
       --border: #263449;
       --accent: #60a5fa;
       --accent-2: #22d3ee;
+      --success: #4ade80;
+      --warning: #fbbf24;
+      --danger: #fb7185;
     }
-    button, input { font: inherit; }
-    button { cursor: pointer; }
+
+    button,
+    input {
+      font: inherit;
+    }
+
+    button {
+      cursor: pointer;
+    }
+
+    button:focus-visible,
+    input:focus-visible {
+      outline: 3px solid color-mix(in srgb, var(--accent) 34%, white);
+      outline-offset: 2px;
+    }
+
+    .visually-hidden {
+      position: absolute;
+      width: 1px;
+      height: 1px;
+      padding: 0;
+      margin: -1px;
+      overflow: hidden;
+      clip: rect(0, 0, 0, 0);
+      white-space: nowrap;
+      border: 0;
+    }
+
     .session-sidebar {
       min-height: 100vh;
       padding: 24px;
@@ -193,7 +220,13 @@ import { ThemeService } from './copilot/services/theme.service';
       flex-direction: column;
       gap: 18px;
     }
-    .brand { display: flex; gap: 12px; align-items: center; }
+
+    .brand {
+      display: flex;
+      gap: 12px;
+      align-items: center;
+    }
+
     .brand-mark {
       display: grid;
       place-items: center;
@@ -203,47 +236,102 @@ import { ThemeService } from './copilot/services/theme.service';
       background: linear-gradient(135deg, #22d3ee, #7c3aed);
       font-weight: 800;
     }
-    .brand p, .eyebrow, .section-title p, .approval-card > p {
+
+    .brand p,
+    .eyebrow,
+    .section-title p {
       margin: 0 0 4px;
       color: var(--accent-2);
       font-size: 12px;
       font-weight: 800;
-      letter-spacing: 0;
       text-transform: uppercase;
     }
-    .brand h1, h2, h3 { margin: 0; }
-    .brand h1 { font-size: 20px; }
-    .new-session, .composer button, .approval-actions button {
+
+    .brand h1,
+    h2 {
+      margin: 0;
+    }
+
+    .brand h1 {
+      font-size: 20px;
+    }
+
+    .new-session,
+    .composer button {
       border: 0;
-      border-radius: 10px;
+      border-radius: 12px;
       background: linear-gradient(135deg, #2563eb, #7c3aed);
       color: #fff;
       padding: 11px 14px;
       font-weight: 800;
       box-shadow: 0 14px 28px rgba(37, 99, 235, .22);
     }
-    .session-list { display: grid; gap: 10px; }
+
+    .session-list {
+      display: grid;
+      gap: 10px;
+    }
+
     .session-card {
       border: 1px solid rgba(255, 255, 255, .14);
-      border-radius: 12px;
+      border-radius: 14px;
       background: rgba(255, 255, 255, .07);
       color: #fff;
       padding: 13px;
       text-align: left;
+      transition: transform .16s ease, background .16s ease;
     }
-    .session-card span, .sidebar-note span {
+
+    .session-card:hover {
+      transform: translateY(-1px);
+      background: rgba(255, 255, 255, .09);
+    }
+
+    .session-card span,
+    .sidebar-note span {
       display: block;
       margin-top: 6px;
       color: #cbd5e1;
       font-size: 13px;
       line-height: 1.45;
     }
-    .sidebar-note { margin-top: auto; padding: 14px; border: 1px solid rgba(255,255,255,.14); border-radius: 12px; background: rgba(255,255,255,.06); }
-    .conversation { min-width: 0; padding: 28px; display: flex; flex-direction: column; gap: 18px; }
-    .topbar, .topbar-actions { display: flex; justify-content: space-between; gap: 14px; align-items: flex-start; }
-    .topbar h2 { max-width: 800px; font-size: clamp(24px, 3vw, 38px); line-height: 1.1; }
-    .topbar-actions { align-items: center; }
-    .status-pill, .theme-toggle {
+
+    .sidebar-note {
+      margin-top: auto;
+      padding: 14px;
+      border: 1px solid rgba(255, 255, 255, .14);
+      border-radius: 12px;
+      background: rgba(255, 255, 255, .06);
+    }
+
+    .conversation {
+      min-width: 0;
+      padding: 28px;
+      display: flex;
+      flex-direction: column;
+      gap: 18px;
+    }
+
+    .topbar,
+    .topbar-actions {
+      display: flex;
+      justify-content: space-between;
+      gap: 14px;
+      align-items: flex-start;
+    }
+
+    .topbar h2 {
+      max-width: 860px;
+      font-size: clamp(24px, 3vw, 38px);
+      line-height: 1.1;
+    }
+
+    .topbar-actions {
+      align-items: center;
+    }
+
+    .status-pill,
+    .theme-toggle {
       border: 1px solid var(--border);
       border-radius: 999px;
       background: var(--panel);
@@ -253,80 +341,169 @@ import { ThemeService } from './copilot/services/theme.service';
       font-weight: 800;
       white-space: nowrap;
     }
-    .status-pill.thinking, .status-pill.retrieving_context, .status-pill.planning { color: #075985; background: #e0f2fe; }
-    .status-pill.awaiting_approval { color: #92400e; background: #fef3c7; }
-    .status-pill.executing_tool { color: #5b21b6; background: #ede9fe; }
-    .status-pill.completed { color: #166534; background: #dcfce7; }
-    .mode-tabs { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 10px; }
-    .mode-tabs button {
-      border: 1px solid var(--border);
-      border-radius: 14px;
-      background: var(--panel);
-      color: var(--text);
-      padding: 13px;
-      text-align: left;
+
+    .status-pill.thinking,
+    .status-pill.retrieving_context,
+    .status-pill.planning {
+      color: #075985;
+      background: #e0f2fe;
     }
-    .mode-tabs button.active { border-color: var(--accent); box-shadow: 0 0 0 3px rgba(37, 99, 235, .12); }
-    .mode-tabs span { display: block; margin-top: 4px; color: var(--muted); font-size: 12px; line-height: 1.35; }
-    .message-thread { display: grid; gap: 14px; overflow: auto; padding-right: 6px; }
-    .message {
-      width: min(780px, 100%);
+
+    .status-pill.awaiting_approval {
+      color: #92400e;
+      background: #fef3c7;
+    }
+
+    .status-pill.executing_tool {
+      color: #5b21b6;
+      background: #ede9fe;
+    }
+
+    .status-pill.completed {
+      color: #166534;
+      background: #dcfce7;
+    }
+
+    .status-pill.recovering,
+    .status-pill.failed {
+      color: #991b1b;
+      background: #fee2e2;
+    }
+
+    .walkthrough-card,
+    .panel-card {
       border: 1px solid var(--border);
       border-radius: 16px;
-      background: var(--panel);
+      background: linear-gradient(180deg, var(--panel), color-mix(in srgb, var(--panel) 82%, var(--panel-2)));
       padding: 16px;
-      box-shadow: 0 16px 35px rgba(15, 23, 42, .06);
+      box-shadow: 0 14px 35px rgba(15, 23, 42, .05);
     }
-    .message.assistant { border-left: 5px solid var(--accent); }
-    .message-meta { display: flex; justify-content: space-between; gap: 12px; color: var(--muted); font-size: 12px; font-weight: 800; text-transform: uppercase; }
-    .message p { margin: 10px 0 0; line-height: 1.65; }
+
+    .walkthrough-card p,
+    .empty {
+      color: var(--muted);
+      line-height: 1.55;
+      margin: 8px 0 0;
+    }
+
     .composer {
       margin-top: auto;
       display: grid;
       grid-template-columns: minmax(0, 1fr) auto auto;
       gap: 10px;
       border: 1px solid var(--border);
-      border-radius: 16px;
+      border-radius: 18px;
       background: var(--panel);
       padding: 10px;
       box-shadow: 0 18px 40px rgba(15, 23, 42, .08);
+      position: sticky;
+      bottom: 16px;
     }
-    .composer input { min-width: 0; border: 0; outline: 0; background: transparent; color: var(--text); padding: 9px 10px; }
-    .composer .secondary, .approval-actions .secondary { background: var(--panel-2); color: var(--text); border: 1px solid var(--border); box-shadow: none; }
-    .context-panel { border-left: 1px solid var(--border); background: var(--panel); padding: 24px; display: grid; align-content: start; gap: 16px; }
-    .panel-card, .approval-card { border: 1px solid var(--border); border-radius: 16px; background: var(--panel); padding: 16px; }
-    .section-title { margin-bottom: 12px; }
-    dl { display: grid; gap: 8px; margin: 0; }
-    dl div { display: grid; grid-template-columns: 82px 1fr; gap: 8px; }
-    dt { color: var(--muted); font-size: 12px; font-weight: 800; text-transform: uppercase; }
-    dd { margin: 0; font-size: 13px; }
-    .chips { display: flex; flex-wrap: wrap; gap: 7px; margin-top: 12px; }
-    .chips span, .source-card span, .risk { border-radius: 999px; background: var(--panel-2); color: var(--muted); padding: 5px 8px; font-size: 12px; font-weight: 700; }
-    .source-card { border-top: 1px solid var(--border); padding-top: 12px; margin-top: 12px; }
-    .source-card div { display: flex; justify-content: space-between; gap: 10px; }
-    .source-card p, .timeline p, .empty { color: var(--muted); font-size: 13px; line-height: 1.45; }
-    meter { width: 100%; height: 8px; }
-    .timeline { list-style: none; padding: 0; margin: 0; display: grid; gap: 13px; }
-    .timeline li { display: grid; grid-template-columns: 14px 1fr; gap: 10px; }
-    .timeline strong, .timeline small { display: block; }
-    .timeline small { margin-top: 2px; }
-    .timeline-dot { width: 11px; height: 11px; margin-top: 5px; border-radius: 50%; background: var(--muted); }
-    .timeline-dot.succeeded { background: var(--success); }
-    .timeline-dot.running { background: var(--accent); }
-    .timeline-dot.awaiting_approval { background: var(--warning); }
-    .approval-card { background: linear-gradient(135deg, rgba(251, 191, 36, .14), rgba(59, 130, 246, .08)); border-color: rgba(217, 119, 6, .4); }
-    .approval-actions { display: flex; flex-wrap: wrap; gap: 8px; }
+
+    .composer input {
+      min-width: 0;
+      border: 0;
+      outline: 0;
+      background: transparent;
+      color: var(--text);
+      padding: 11px 12px;
+    }
+
+    .composer .secondary {
+      background: var(--panel-2);
+      color: var(--text);
+      border: 1px solid var(--border);
+      box-shadow: none;
+    }
+
+    .context-panel {
+      border-left: 1px solid var(--border);
+      background: var(--panel);
+      padding: 24px;
+      display: grid;
+      align-content: start;
+      gap: 16px;
+    }
+
+    .section-title {
+      margin-bottom: 12px;
+    }
+
+    dl {
+      display: grid;
+      gap: 8px;
+      margin: 0;
+    }
+
+    dl div {
+      display: grid;
+      grid-template-columns: 82px 1fr;
+      gap: 8px;
+    }
+
+    dt {
+      color: var(--muted);
+      font-size: 12px;
+      font-weight: 800;
+      text-transform: uppercase;
+    }
+
+    dd {
+      margin: 0;
+      font-size: 13px;
+    }
+
+    .chips {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 7px;
+      margin-top: 12px;
+    }
+
+    .chips span {
+      border-radius: 999px;
+      background: var(--panel-2);
+      color: var(--muted);
+      padding: 5px 8px;
+      font-size: 12px;
+      font-weight: 700;
+    }
+
     @media (max-width: 1180px) {
-      .copilot-app { grid-template-columns: 240px minmax(0, 1fr); }
-      .context-panel { grid-column: 1 / -1; border-left: 0; grid-template-columns: repeat(2, minmax(0, 1fr)); }
+      .copilot-app {
+        grid-template-columns: 240px minmax(0, 1fr);
+      }
+
+      .context-panel {
+        grid-column: 1 / -1;
+        border-left: 0;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
     }
+
     @media (max-width: 760px) {
-      .copilot-app { grid-template-columns: 1fr; }
-      .session-sidebar { min-height: auto; }
-      .topbar, .topbar-actions, .composer { grid-template-columns: 1fr; flex-direction: column; }
-      .mode-tabs, .context-panel { grid-template-columns: 1fr; }
+      .copilot-app {
+        grid-template-columns: 1fr;
+      }
+
+      .session-sidebar {
+        min-height: auto;
+      }
+
+      .topbar,
+      .topbar-actions {
+        flex-direction: column;
+      }
+
+      .context-panel {
+        grid-template-columns: 1fr;
+      }
+
+      .composer {
+        grid-template-columns: 1fr;
+      }
     }
-  `]
+  `],
 })
 export class AppComponent {
   readonly theme = inject(ThemeService);
@@ -359,7 +536,7 @@ export class AppComponent {
       mode: this.activeMode(),
       content: prompt,
       state: 'completed',
-      createdAt: new Date().toISOString()
+      createdAt: new Date().toISOString(),
     };
     const assistantMessage: CopilotMessage = {
       id: 'msg-assistant-' + Date.now(),
@@ -368,7 +545,7 @@ export class AppComponent {
       mode: this.activeMode(),
       content: '',
       state: 'thinking',
-      createdAt: new Date().toISOString()
+      createdAt: new Date().toISOString(),
     };
 
     this.messages.set([userMessage, assistantMessage]);
@@ -380,29 +557,52 @@ export class AppComponent {
     window.setTimeout(() => this.executionState.set('retrieving_context'), 450);
     window.setTimeout(() => this.sources.set(DEMO_RAG_SOURCES), 950);
     window.setTimeout(() => this.executionState.set('planning'), 1250);
-    window.setTimeout(() => this.tools.set(DEMO_TOOL_CALLS.map(tool => ({ ...tool, status: tool.requiresApproval ? 'awaiting_approval' : 'succeeded' }))), 1700);
+    window.setTimeout(
+      () =>
+        this.tools.set(
+          DEMO_TOOL_CALLS.map((tool) => ({
+            ...tool,
+            status: tool.requiresApproval ? 'awaiting_approval' : 'succeeded',
+          })),
+        ),
+      1700,
+    );
     window.setTimeout(() => this.executionState.set('awaiting_approval'), 2100);
     window.setTimeout(() => this.approval.set(DEMO_APPROVALS[0]), 2300);
     this.streamAssistantMessage(assistantMessage.id, this.buildMockResponse(prompt));
   }
 
   resolveApproval(approved: boolean): void {
-    this.approval.update(item => item ? { ...item, approved } : item);
+    this.approval.update((item) => (item ? { ...item, approved } : item));
     this.executionState.set(approved ? 'executing_tool' : 'recovering');
-    this.tools.update(tools => tools.map(tool => tool.requiresApproval ? {
-      ...tool,
-      status: approved ? 'running' : 'skipped',
-      outputSummary: approved ? 'Mock workflow execution started.' : 'Action rejected. Recovery path prepared.'
-    } : tool));
+    this.tools.update((tools) =>
+      tools.map((tool) =>
+        tool.requiresApproval
+          ? {
+              ...tool,
+              status: approved ? 'running' : 'skipped',
+              outputSummary: approved
+                ? 'Mock workflow execution started.'
+                : 'Action rejected. Recovery path prepared.',
+            }
+          : tool,
+      ),
+    );
 
     if (approved) {
       window.setTimeout(() => {
         this.executionState.set('completed');
-        this.tools.update(tools => tools.map(tool => tool.requiresApproval ? {
-          ...tool,
-          status: 'succeeded',
-          outputSummary: 'Mock onboarding workflow completed after approval.'
-        } : tool));
+        this.tools.update((tools) =>
+          tools.map((tool) =>
+            tool.requiresApproval
+              ? {
+                  ...tool,
+                  status: 'succeeded',
+                  outputSummary: 'Mock onboarding workflow completed after approval.',
+                }
+              : tool,
+          ),
+        );
       }, 900);
     }
   }
@@ -411,11 +611,17 @@ export class AppComponent {
     const tokens = response.split(' ');
     tokens.forEach((token, index) => {
       window.setTimeout(() => {
-        this.messages.update(messages => messages.map(message => message.id === messageId ? {
-          ...message,
-          content: (message.content + ' ' + token).trim(),
-          state: index === tokens.length - 1 ? 'awaiting_approval' : this.executionState()
-        } : message));
+        this.messages.update((messages) =>
+          messages.map((message) =>
+            message.id === messageId
+              ? {
+                  ...message,
+                  content: `${message.content} ${token}`.trim(),
+                  state: index === tokens.length - 1 ? 'awaiting_approval' : this.executionState(),
+                }
+              : message,
+          ),
+        );
       }, 80 * index);
     });
   }

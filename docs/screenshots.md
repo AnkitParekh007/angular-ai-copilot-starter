@@ -1,13 +1,15 @@
 # Screenshots
 
-Add screenshots after the Angular UI is polished.
+Use screenshots to prove distinct recruiter-visible states, not just generic UI presence.
 
-## Recommended Captures
+## Recommended captures
 
-1. Copilot shell with open session sidebar.
-2. Ask mode showing streaming response.
-3. Plan mode showing RAG source cards.
-4. Execute mode showing action approval card.
-5. Debug mode showing failed and recovering tool state.
+1. Ask mode with streaming response
+2. Plan mode with RAG source cards
+3. Execute mode with tool timeline
+4. Approval card before action approval
+5. Dark mode shell
+6. Light mode shell
+7. Mobile responsive layout
 
-Use neutral sample data and avoid company/private screenshots.
+Use neutral sample data and avoid company or private screenshots.

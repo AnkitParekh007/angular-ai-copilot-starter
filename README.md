@@ -7,95 +7,75 @@
 ![MCP](https://img.shields.io/badge/MCP-Tool%20Timeline-4F46E5)
 ![Open Source](https://img.shields.io/badge/Open%20Source-Contribution%20Friendly-2563EB)
 
-Build a production-style Angular AI copilot UI with streaming chat, RAG source
-cards, MCP/tool-call timeline, action approvals, and enterprise agent modes.
+Build a polished, recruiter-facing Angular AI copilot demo with streaming chat UX, RAG source cards, MCP-style tool timeline, action approvals, mock MCP tools, and enterprise agent modes.
 
 ![Angular AI Copilot Starter preview](docs/assets/screenshots/copilot-shell-light.png)
 
-**Live demo:** Not deployed yet. Recommended URL after deployment:
+**Deploy path:** GitHub Pages workflow included. After enabling Pages, publish to:
 `https://ankitparekh007.github.io/angular-ai-copilot-starter/`
 
-**GitHub topics:** `angular`, `typescript`, `ai-copilot`, `rag`, `mcp`, `llm`,
-`ai-agents`, `tool-calling`, `streaming-ui`, `frontend-architecture`,
-`enterprise-ui`, `agent-ui`, `copilot-ui`, `rxjs`, `guardrails`
+**Live demo CTA:** this repo is mock-only but production-style. No API keys, no backend claims, no hidden services.
 
-## Preview
+## Why this repo matters
 
-This is a mock-only Angular demo that shows the frontend architecture of an
-enterprise AI copilot:
+Most Angular AI demos stop at a chat box. This repo shows the rest of the product workflow:
 
-- Left session sidebar.
-- Central streaming conversation thread.
-- Bottom prompt composer.
-- Right context, RAG, tool, and approval panel.
-- Agent modes for Ask, Plan, Execute, and Debug.
-- Light/dark theme toggle.
-- Responsive layout.
+- visible context
+- streaming response states
+- grounded RAG evidence
+- tool planning and execution visibility
+- human approval before risky actions
+- mode-specific behavior for Ask, Plan, Execute, and Debug
 
-The current README image is a real local screenshot captured from the Angular
-demo. Feature-specific screenshots can be expanded as the demo states are
-polished.
+## 20-second GIF section
 
-## Why This Exists
+Recommended walkthrough beats for a README GIF:
 
-Most AI chat demos stop at a text box. Enterprise copilots need more visible
-structure: page context, grounded sources, tool execution status, human
-approval, recovery states, and clear UI boundaries between frontend and backend
-responsibilities.
+1. Start in Ask mode.
+2. Switch to Plan mode.
+3. Run the demo flow.
+4. Show streaming response in the message thread.
+5. Highlight RAG source cards.
+6. Highlight the tool timeline.
+7. Pause on the approval card.
+8. Toggle dark mode.
 
-This repo demonstrates those AI frontend patterns in Angular without using real
-model providers, paid APIs, secrets, or private data.
+Suggested future asset:
 
-## Why Star This Repo?
+`docs/assets/screenshots/demo-walkthrough.gif`
 
-- Learn how to structure AI copilot UI in Angular.
-- See patterns for RAG citations, tool calling, and approval flows.
-- Reuse enterprise-ready TypeScript models.
-- Use it as a starter for internal AI assistants.
-- Study Angular-first AI frontend architecture beyond simple chat UI.
+## What this proves
 
-## Who This Helps
+This project demonstrates:
 
-- Frontend engineers moving into AI product engineering.
-- Angular teams building copilots.
-- AI startups needing enterprise UI patterns.
-- Product teams adding RAG and tool calling to web apps.
-- Recruiters evaluating AI frontend architecture depth.
-- Maintainers looking for Angular examples or UI adapters.
+- Angular-first AI frontend architecture
+- typed UI boundaries for copilot systems
+- streaming UX without pretending a real model backend exists
+- grounded answer presentation with source cards
+- MCP-style tool planning and execution visibility
+- human approval UX before risky actions
+- responsive, theme-aware enterprise copilot layout
+- honest mock-only boundaries suitable for recruiter review
 
-## Features
+## Demo walkthrough
 
-- Modern three-panel Angular copilot shell.
-- Mock streaming response simulation.
-- RAG source cards with confidence and source types.
-- MCP-style tool-call timeline.
-- Human approval card for risky workflow actions.
-- Execution status pills for thinking, retrieving context, planning, awaiting
-  approval, executing, completed, failed, and recovering.
-- Agent modes: Ask, Plan, Execute, Debug.
-- Page context panel with route, selected record, role, tenant, and visible
-  fields.
-- Light/dark theme toggle.
-- Responsive layout for smaller screens.
-- Mock-only services, no API keys required.
+1. Run `npm install`
+2. Run `npm start`
+3. Open the local Angular URL
+4. Switch between Ask, Plan, Execute, and Debug
+5. Click **Run Demo Flow**
+6. Watch the assistant response stream into the thread
+7. Inspect the RAG source cards
+8. Inspect the tool timeline
+9. Approve or reject the mock workflow action
+10. Discuss how the mock services would map to a real backend contract
 
-## Demo Walkthrough
-
-1. Run the app with `npm start`.
-2. Open the copilot shell.
-3. Switch between Ask, Plan, Execute, and Debug.
-4. Click **Run Demo Flow**.
-5. Watch the assistant message stream token-by-token.
-6. Inspect RAG source cards after retrieval.
-7. Review the MCP/tool timeline after planning.
-8. Approve or reject the mock workflow action.
-9. Discuss how the mock services would map to a real backend.
-
-## Architecture
+## Architecture diagram
 
 ```mermaid
 flowchart LR
-    User[User] --> Shell[Copilot Shell]
+    User[User] --> Shell[Angular Copilot Shell]
+    Shell --> Modes[Ask / Plan / Execute / Debug]
     Shell --> Thread[Message Thread]
     Shell --> Context[Context Panel]
     Shell --> Composer[Message Composer]
@@ -104,170 +84,106 @@ flowchart LR
     Service --> Rag[Mock RAG Service]
     Service --> Tools[Mock Tool Registry]
     Rag --> Sources[RAG Source Cards]
-    Tools --> Timeline[Tool Call Timeline]
-    Timeline --> Approval[Action Approval Card]
+    Tools --> Timeline[Tool Timeline]
+    Timeline --> Approval[Approval Card]
+    Approval --> Guardrail[Mock-only, production-style guardrail]
 ```
 
-## Tech Stack
+## Recruiter review in 3 minutes
 
-- Angular 20.
-- TypeScript.
-- RxJS.
-- Standalone components.
-- Angular signals.
-- Mock RAG/tool services.
-- Mermaid documentation.
+### Minute 1
 
-## Folder Structure
+- scan the hero screenshot
+- read the one-line pitch
+- read **What this proves**
 
-```text
-src/app/
-  app.component.ts
-  copilot/
-    components/
-      action-approval-card/
-      agent-mode-selector/
-      context-panel/
-      copilot-shell/
-      execution-status-pill/
-      message-composer/
-      message-thread/
-      rag-source-card/
-      session-sidebar/
-      theme-toggle/
-      tool-call-timeline/
-    mocks/
-    models/
-    services/
-docs/
-  assets/screenshots/
-  architecture.md
-  demo-script.md
-  deployment.md
-WHAT_THIS_PROVES.md
-RECRUITER_REVIEW_GUIDE.md
-```
+### Minute 2
 
-## Core Concepts
+- inspect the Ask / Plan / Execute screenshots
+- review the architecture diagram
+- confirm the mock-only boundaries are explicit
 
-| Concept | What it shows |
+### Minute 3
+
+- inspect `src/app/copilot/models/`
+- inspect `src/app/copilot/services/`
+- inspect `src/app/copilot/components/`
+
+More detail:
+
+- [RECRUITER_REVIEW_GUIDE.md](RECRUITER_REVIEW_GUIDE.md)
+- [WHAT_THIS_PROVES.md](WHAT_THIS_PROVES.md)
+- [docs/recruiter-notes.md](docs/recruiter-notes.md)
+
+## Features
+
+- modern three-panel Angular copilot shell
+- reusable standalone components for key copilot surfaces
+- mock streaming response simulation
+- RAG source cards with confidence and source types
+- MCP-style tool-call timeline
+- human approval card for risky workflow actions
+- execution status pill for thinking, retrieving, planning, awaiting approval, executing, completed, failed, and recovering
+- agent modes: Ask, Plan, Execute, Debug
+- page context panel with route, selected record, role, tenant, and visible fields
+- light/dark theme toggle
+- responsive layout for smaller screens
+- mock-only services, no API keys required
+
+## Screenshots
+
+The screenshot set is organized around the states this repo is meant to prove:
+
+| State | Path |
 | --- | --- |
-| Streaming UX | Token-by-token mock response with visible execution state. |
-| RAG UI | Source cards with snippets, source type, and confidence. |
-| Tool timeline | MCP-style tool planning and execution visibility. |
-| Action approval | Human-in-the-loop UX before workflow-changing actions. |
-| Agent modes | Different UX expectations for ask, plan, execute, and debug. |
-| Context panel | Safe page context shown before agent action. |
-| Enterprise guardrails | Mock-only boundaries, no secrets, visible approvals. |
+| Light shell | `docs/assets/screenshots/copilot-shell-light.png` |
+| Dark shell | `docs/assets/screenshots/copilot-shell-dark.png` |
+| Ask / streaming | `docs/assets/screenshots/streaming-message.png` |
+| Plan / RAG sources | `docs/assets/screenshots/rag-source-cards.png` |
+| Execute / tool timeline | `docs/assets/screenshots/tool-call-timeline.png` |
+| Approval card | `docs/assets/screenshots/action-approval-flow.png` |
+| Responsive mobile | `docs/assets/screenshots/responsive-mobile.png` |
 
-## How to Run
+See:
+
+- [SCREENSHOT_CAPTURE_GUIDE.md](SCREENSHOT_CAPTURE_GUIDE.md)
+- [SCREENSHOT_STATUS.md](SCREENSHOT_STATUS.md)
+
+## How to run
 
 ```bash
 npm install
 npm start
 ```
 
-Open the local Angular URL shown by the CLI.
-
-Build check:
+Build:
 
 ```bash
 npm run build
 ```
 
-## Screenshots
+Tests:
 
-The main desktop and mobile screenshots are real local captures. The remaining
-feature-specific image paths are placeholders until those exact states are
-captured from the running app.
+```bash
+npm test
+```
 
-| State | Path |
-| --- | --- |
-| Copilot shell light | `docs/assets/screenshots/copilot-shell-light.png` |
-| Copilot shell dark | `docs/assets/screenshots/copilot-shell-dark.png` |
-| Streaming message | `docs/assets/screenshots/streaming-message.png` |
-| RAG source cards | `docs/assets/screenshots/rag-source-cards.png` |
-| Tool-call timeline | `docs/assets/screenshots/tool-call-timeline.png` |
-| Action approval flow | `docs/assets/screenshots/action-approval-flow.png` |
-| Responsive mobile | `docs/assets/screenshots/responsive-mobile.png` |
+## Live demo deployment
 
-See [SCREENSHOT_CAPTURE_GUIDE.md](SCREENSHOT_CAPTURE_GUIDE.md) and
-[SCREENSHOT_STATUS.md](SCREENSHOT_STATUS.md).
+This repo does not claim a live URL yet, but it now includes a real deployment workflow and checklist:
 
-## What This Proves
-
-This repo demonstrates:
-
-- Angular component architecture for AI copilots.
-- Streaming UX patterns.
-- RAG source rendering.
-- MCP/tool-call timeline design.
-- Human approval UX.
-- Agent mode modeling.
-- Enterprise-safe AI workflow thinking.
-- Clean TypeScript interfaces for AI frontend systems.
-
-## Recruiter Review Guide
-
-For a 30-second review:
-
-1. Look at the preview image.
-2. Read the one-line pitch.
-3. Scan Features and What This Proves.
-
-For a 2-minute technical review:
-
-1. Inspect `src/app/copilot/models/`.
-2. Inspect `src/app/copilot/services/`.
-3. Inspect `src/app/app.component.ts`.
-4. Review `WHAT_THIS_PROVES.md`.
-5. Review `RECRUITER_REVIEW_GUIDE.md`.
-
-## Contribution Guide
-
-Contributions are welcome around screenshots, responsive layout, accessibility,
-mock tools, RAG source rendering, tests, docs, and UI variants.
-
-See [CONTRIBUTING.md](CONTRIBUTING.md).
-
-## Good First Issues
-
-- Add screenshot/GIF to README.
-- Add dark/light theme screenshot.
-- Add mobile responsive layout improvements.
-- Add another mock MCP tool.
-- Improve RAG source card accessibility.
-- Add unit tests for streaming service.
-- Add error recovery demo state.
-- Add keyboard navigation.
-- Add Angular Material variant.
-- Add PrimeNG variant.
-- Add Storybook component previews.
-- Add animated tool timeline.
-
-See [GOOD_FIRST_ISSUES.md](GOOD_FIRST_ISSUES.md).
-
-## Roadmap
-
-See [ROADMAP.md](ROADMAP.md).
-
-## Live Demo Deployment
-
-No live demo is currently claimed.
-
-Deployment is prepared in:
-
+- [.github/workflows/deploy-pages.yml](.github/workflows/deploy-pages.yml)
 - [DEPLOYMENT_GUIDE.md](DEPLOYMENT_GUIDE.md)
 - [LIVE_DEMO_CHECKLIST.md](LIVE_DEMO_CHECKLIST.md)
 - [LIVE_DEMO_STATUS.md](LIVE_DEMO_STATUS.md)
 
-Recommended future URL:
+Target URL after Pages is enabled:
 
 ```text
 https://ankitparekh007.github.io/angular-ai-copilot-starter/
 ```
 
-## What Is Mocked vs Real
+## What is mocked vs real
 
 Mocked:
 
@@ -284,21 +200,32 @@ Real:
 - UI architecture
 - simulated streaming UX
 - reusable frontend patterns
-- documentation and contribution structure
+- recruiter-facing documentation and contribution structure
 
-This is not claimed as production-ready. It is a public proof project and
-starter architecture.
+No production backend is claimed. This is a mock-only but production-style frontend proof project.
 
-## Author
+## Good first issues
 
-Ankit Parekh
+- add or refresh the 20-second GIF
+- improve theme polish
+- extend keyboard navigation
+- add another mock MCP tool
+- improve RAG card accessibility
+- expand test coverage
+- add an error-recovery demo state
+- add Storybook or design-system variants
 
-- GitHub: [github.com/AnkitParekh007](https://github.com/AnkitParekh007)
-- Portfolio: [ankitparekh007.github.io/resume](https://ankitparekh007.github.io/resume/)
+See [GOOD_FIRST_ISSUES.md](GOOD_FIRST_ISSUES.md).
 
-## Follow Along
+## Docs
 
-I am building Angular-first AI frontend patterns for copilots, RAG UX,
-MCP/tool calling, UI-aware agents, and enterprise AI interfaces.
+- [docs/architecture.md](docs/architecture.md)
+- [docs/deployment.md](docs/deployment.md)
+- [docs/demo-script.md](docs/demo-script.md)
+- [docs/interview-talking-points.md](docs/interview-talking-points.md)
 
-Star or watch this repo if you want updates.
+## Contributing
+
+Contributions are welcome around screenshots, responsive layout, accessibility, mock tools, RAG source rendering, tests, docs, and UI variants.
+
+See [CONTRIBUTING.md](CONTRIBUTING.md).

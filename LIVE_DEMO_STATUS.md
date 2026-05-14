@@ -1,41 +1,29 @@
 # Live Demo Status
 
-## Current Status
+## Current status
 
-- Deployed: No
-- Live demo URL: Not available yet
-- Recommended URL after GitHub Pages deployment: `https://ankitparekh007.github.io/angular-ai-copilot-starter/`
-- Recommended first deployment target: GitHub Pages
+- Deployed: not claimed yet
+- Workflow present: yes
+- Target URL: `https://ankitparekh007.github.io/angular-ai-copilot-starter/`
+- Recommended deployment target: GitHub Pages
 
-No live demo is claimed in the README until the app is actually deployed.
+## Verified locally
 
-## Verified Locally
-
-- `npm install`: passed
-- `npm run build`: passed
+- `npm install`: expected validation command
+- `npm run build`: expected validation command
 - API keys required: no
 - Backend required: no
 
-## Manual GitHub Pages Steps
+## Deployment path
 
 ```bash
 npm install
-npm run build -- --base-href /angular-ai-copilot-starter/
+npm run build -- --configuration production --base-href /angular-ai-copilot-starter/
 ```
 
 Then:
 
-1. Push the reviewed repo changes.
-2. Open the GitHub repository.
-3. Go to Settings.
-4. Open Pages.
-5. Select GitHub Actions or the deployment branch/workflow you choose.
-6. Verify the deployed app.
-7. Update `README.md` and the GitHub About website field with the live URL.
-
-## Final README Line After Deployment
-
-```md
-**Live demo:** https://ankitparekh007.github.io/angular-ai-copilot-starter/
-```
-
+1. enable GitHub Pages with **GitHub Actions**
+2. push to `main` or run the deployment workflow manually
+3. verify the deployed app
+4. only then replace the deploy-path language in the README with the real live URL

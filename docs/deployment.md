@@ -2,26 +2,41 @@
 
 ## GitHub Pages
 
+Use the included workflow:
+
+- `.github/workflows/deploy-pages.yml`
+
+Build command:
+
 ```bash
-npm run build -- --base-href /angular-ai-copilot-starter/
+npm run build -- --configuration production --base-href /angular-ai-copilot-starter/
 ```
 
-Publish the Angular build output from `dist/angular-ai-copilot-starter/browser` using GitHub Pages or a deploy workflow.
+Publish path:
+
+```text
+dist/angular-ai-copilot-starter/browser
+```
 
 ## Vercel
 
-```bash
-vercel
-vercel --prod
-```
-
 Build command: `npm run build`
-Output directory: `dist/angular-ai-copilot-starter/browser`
+
+Output directory:
+
+```text
+dist/angular-ai-copilot-starter/browser
+```
 
 ## Netlify
 
 Build command: `npm run build`
-Publish directory: `dist/angular-ai-copilot-starter/browser`
+
+Publish directory:
+
+```text
+dist/angular-ai-copilot-starter/browser
+```
 
 ## Safety
 
