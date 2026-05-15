@@ -11,8 +11,7 @@ Build a polished, recruiter-facing Angular AI copilot demo with streaming chat U
 
 ![Angular AI Copilot Starter preview](docs/assets/screenshots/copilot-shell-light.png)
 
-**Deploy path:** GitHub Pages workflow included. After enabling Pages, publish to:
-`https://ankitparekh007.github.io/angular-ai-copilot-starter/`
+**Live demo:** [https://ankitparekh007.github.io/angular-ai-copilot-starter/](https://ankitparekh007.github.io/angular-ai-copilot-starter/)
 
 **Live demo CTA:** this repo is mock-only but production-style. No API keys, no backend claims, no hidden services.
 
@@ -29,7 +28,7 @@ Most Angular AI demos stop at a chat box. This repo shows the rest of the produc
 
 ## 20-second GIF section
 
-Recommended walkthrough beats for a README GIF:
+README walkthrough GIF:
 
 1. Start in Ask mode.
 2. Switch to Plan mode.
@@ -39,8 +38,6 @@ Recommended walkthrough beats for a README GIF:
 6. Highlight the tool timeline.
 7. Pause on the approval card.
 8. Toggle dark mode.
-
-Suggested future asset:
 
 `docs/assets/screenshots/demo-walkthrough.gif`
 
@@ -170,14 +167,14 @@ npm test
 
 ## Live demo deployment
 
-This repo does not claim a live URL yet, but it now includes a real deployment workflow and checklist:
+This repo now includes a real GitHub Pages deployment workflow and checklist:
 
 - [.github/workflows/deploy-pages.yml](.github/workflows/deploy-pages.yml)
 - [DEPLOYMENT_GUIDE.md](DEPLOYMENT_GUIDE.md)
 - [LIVE_DEMO_CHECKLIST.md](LIVE_DEMO_CHECKLIST.md)
 - [LIVE_DEMO_STATUS.md](LIVE_DEMO_STATUS.md)
 
-Target URL after Pages is enabled:
+Target URL:
 
 ```text
 https://ankitparekh007.github.io/angular-ai-copilot-starter/
