@@ -25,7 +25,7 @@ const manifest = [];
     manifest.push({ name, file: path.basename(file), url: page.url() });
   }
 
-  async function scenario(name, matcher) {
+  async function scenario(name, matcher, waitMs = 1000) {
     await open();
     const control = page.getByRole('button', { name: matcher }).first();
     if (!(await control.count())) {
@@ -33,7 +33,7 @@ const manifest = [];
       return;
     }
     await control.click();
-    await page.waitForTimeout(900);
+    await page.waitForTimeout(waitMs);
     await screenshot(name);
   }
 
@@ -41,11 +41,12 @@ const manifest = [];
   await screenshot('copilot-default');
   manifest[manifest.length - 1].status = response ? response.status() : null;
 
-  await scenario('copilot-stalled-stream', /(stalled stream|stall.*stream)/i);
+  await scenario('copilot-happy-path', /(run demo flow|run demo|start demo)/i, 2600);
   await scenario('copilot-retrieval-failure', /(retrieval failure|retrieval.*fail)/i);
   await scenario('copilot-failed-tool', /failed tool/i);
   await scenario('copilot-approval-rejection', /(approval rejection|reject.*approval|rejected approval)/i);
-  await scenario('copilot-recovery-retry', /(retry|recover)/i);
+  await scenario('copilot-stalled-stream', /(stalled stream|stall.*stream)/i);
+  await scenario('copilot-recovery-retry', /(retry|recover)/i, 1300);
 
   fs.writeFileSync(path.join(outputDir, 'manifest.json'), `${JSON.stringify(manifest, null, 2)}\n`);
   await browser.close();
