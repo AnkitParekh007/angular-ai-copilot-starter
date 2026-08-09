@@ -17,7 +17,7 @@ let browser;
 
   async function open() {
     const response = await page.goto(baseUrl, { waitUntil: 'domcontentloaded', timeout: 45000 });
-    await page.waitForTimeout(700);
+    await page.getByRole('heading', { name: /copilot workspace/i }).waitFor({ state: 'visible', timeout: 30000 });
     return response;
   }
 
@@ -30,22 +30,22 @@ let browser;
   async function openRecoveryShowcase() {
     await open();
     const heading = page.getByRole('heading', { name: /failure and recovery showcase/i }).first();
-    await heading.waitFor({ state: 'visible', timeout: 10000 });
+    await heading.waitFor({ state: 'visible', timeout: 30000 });
     await heading.scrollIntoViewIfNeeded();
-    await page.waitForTimeout(250);
+    await page.waitForTimeout(200);
   }
 
   async function recoveryScenario(name, matcher, retry = false) {
     await openRecoveryShowcase();
     const control = page.getByRole('button', { name: matcher }).first();
-    if (!(await control.count())) throw new Error(`No resilience scenario button matched ${matcher}`);
+    await control.waitFor({ state: 'visible', timeout: 10000 });
     await control.click();
-    await page.waitForTimeout(350);
+    await page.waitForTimeout(300);
     if (retry) {
       const retryButton = page.getByRole('button', { name: /retry with prior context/i }).first();
-      if (!(await retryButton.count())) throw new Error('Retry with prior context control unavailable');
+      await retryButton.waitFor({ state: 'visible', timeout: 10000 });
       await retryButton.click();
-      await page.waitForTimeout(500);
+      await page.waitForTimeout(450);
     }
     await screenshot(name);
   }
@@ -55,7 +55,7 @@ let browser;
   manifest[manifest.length - 1].status = response ? response.status() : null;
 
   const runDemo = page.getByRole('button', { name: /^Run Demo Flow$/i }).first();
-  if (!(await runDemo.count())) throw new Error('Run Demo Flow button unavailable');
+  await runDemo.waitFor({ state: 'visible', timeout: 10000 });
   await runDemo.click();
   await page.waitForTimeout(2600);
   await screenshot('copilot-happy-path');
