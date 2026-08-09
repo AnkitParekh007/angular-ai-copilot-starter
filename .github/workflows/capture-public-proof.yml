@@ -58,13 +58,13 @@ jobs:
           for name in copilot-default copilot-happy-path copilot-retrieval-failure copilot-approval-rejection copilot-stalled-stream copilot-recovery-retry; do
             if [[ -s "$captures/$name.png" ]]; then frames+=("$captures/$name.png"); fi
           done
-          if (( ${#frames[@]} < 4 )); then
-            echo "Need at least four real walkthrough frames; got ${#frames[@]}" >&2
+          if (( ${#frames[@]} < 5 )); then
+            echo "Need at least five real walkthrough frames; got ${#frames[@]}" >&2
             cat "$captures/manifest.json" >&2
             exit 1
           fi
-          convert -delay 120 -loop 0 "${frames[@]}" -resize '960x960>' -layers Optimize "$out"
-          gifsicle -O3 --colors 160 "$out" -o "$out"
+          convert -delay 120 -loop 0 "${frames[@]}" -resize '960x600>' -layers Optimize "$out"
+          gifsicle -O3 --colors 128 "$out" -o "$out"
           test -s "$out"
           test "$(stat -c%s "$out")" -lt 8000000
 
