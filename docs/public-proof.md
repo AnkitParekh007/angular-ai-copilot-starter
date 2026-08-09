@@ -4,6 +4,10 @@
 
 ## 30-second review
 
+![Angular AI Copilot happy path, failure, and recovery walkthrough](assets/screenshots/demo-walkthrough.gif)
+
+The animation is generated from the exact Angular branch build at a 1440×900 recruiter viewport. It pairs the primary deterministic flow with explicit failure and recovery states without implying a production backend.
+
 1. Open the [live demo](https://ankitparekh007.github.io/angular-ai-copilot-starter/).
 2. Scan the three-panel copilot shell and switch between Ask, Plan, Execute, and Debug.
 3. Run the deterministic demo flow and look for visible streaming, RAG sources, the tool timeline, and the approval gate.
