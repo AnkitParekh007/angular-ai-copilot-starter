@@ -8,9 +8,10 @@ const viewport = { width: 1440, height: 900 };
 fs.mkdirSync(outputDir, { recursive: true });
 
 const manifest = [];
+let browser;
 
 (async () => {
-  const browser = await chromium.launch({ headless: true });
+  browser = await chromium.launch({ headless: true });
   const context = await browser.newContext({ viewport, colorScheme: 'light', reducedMotion: 'reduce' });
   const page = await context.newPage();
 
@@ -53,14 +54,12 @@ const manifest = [];
   await screenshot('copilot-default');
   manifest[manifest.length - 1].status = response ? response.status() : null;
 
-  // Happy path is the primary workspace's deterministic demo flow.
   const runDemo = page.getByRole('button', { name: /^Run Demo Flow$/i }).first();
   if (!(await runDemo.count())) throw new Error('Run Demo Flow button unavailable');
   await runDemo.click();
   await page.waitForTimeout(2600);
   await screenshot('copilot-happy-path');
 
-  // Failure/recovery controls live in the second showcase section below the workspace.
   await recoveryScenario('copilot-retrieval-failure', /^Retrieval failure/i);
   await recoveryScenario('copilot-failed-tool', /^Failed tool/i);
   await recoveryScenario('copilot-approval-rejection', /^Rejected approval/i);
@@ -68,8 +67,9 @@ const manifest = [];
   await recoveryScenario('copilot-recovery-retry', /^Stalled stream/i, true);
 
   fs.writeFileSync(path.join(outputDir, 'manifest.json'), `${JSON.stringify(manifest, null, 2)}\n`);
-  await browser.close();
 })().catch((error) => {
   console.error(error);
   process.exitCode = 1;
+}).finally(async () => {
+  if (browser) await browser.close();
 });
