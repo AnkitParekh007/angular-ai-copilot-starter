@@ -6,7 +6,7 @@
   "scripts": {
     "start": "ng serve",
     "build": "ng build",
-    "test": "node --import tsx --test src/app/copilot/copilot.spec.ts"
+    "test": "node --import tsx --test src/app/copilot/copilot.spec.ts src/app/copilot/failure-recovery.spec.ts"
   },
   "dependencies": {
     "@angular/animations": "^20.3.0",
