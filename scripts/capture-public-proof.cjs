@@ -16,7 +16,7 @@ const manifest = [];
 
   async function open() {
     const response = await page.goto(baseUrl, { waitUntil: 'domcontentloaded', timeout: 45000 });
-    await page.waitForTimeout(1200);
+    await page.waitForTimeout(700);
     return response;
   }
 
@@ -26,15 +26,26 @@ const manifest = [];
     manifest.push({ name, file: path.basename(file), url: page.url(), viewport });
   }
 
-  async function scenario(name, matcher, waitMs = 1000) {
+  async function openRecoveryShowcase() {
     await open();
+    const heading = page.getByRole('heading', { name: /failure and recovery showcase/i }).first();
+    await heading.waitFor({ state: 'visible', timeout: 10000 });
+    await heading.scrollIntoViewIfNeeded();
+    await page.waitForTimeout(250);
+  }
+
+  async function recoveryScenario(name, matcher, retry = false) {
+    await openRecoveryShowcase();
     const control = page.getByRole('button', { name: matcher }).first();
-    if (!(await control.count())) {
-      manifest.push({ name, skipped: true, reason: `No button matched ${matcher}` });
-      return;
-    }
+    if (!(await control.count())) throw new Error(`No resilience scenario button matched ${matcher}`);
     await control.click();
-    await page.waitForTimeout(waitMs);
+    await page.waitForTimeout(350);
+    if (retry) {
+      const retryButton = page.getByRole('button', { name: /retry with prior context/i }).first();
+      if (!(await retryButton.count())) throw new Error('Retry with prior context control unavailable');
+      await retryButton.click();
+      await page.waitForTimeout(500);
+    }
     await screenshot(name);
   }
 
@@ -42,26 +53,19 @@ const manifest = [];
   await screenshot('copilot-default');
   manifest[manifest.length - 1].status = response ? response.status() : null;
 
-  await scenario('copilot-happy-path', /(run demo flow|run demo|start demo)/i, 2600);
-  await scenario('copilot-retrieval-failure', /^Retrieval failure/i);
-  await scenario('copilot-failed-tool', /^Failed tool/i);
-  await scenario('copilot-approval-rejection', /^Rejected approval/i);
-  await scenario('copilot-stalled-stream', /^Stalled stream/i);
+  // Happy path is the primary workspace's deterministic demo flow.
+  const runDemo = page.getByRole('button', { name: /^Run Demo Flow$/i }).first();
+  if (!(await runDemo.count())) throw new Error('Run Demo Flow button unavailable');
+  await runDemo.click();
+  await page.waitForTimeout(2600);
+  await screenshot('copilot-happy-path');
 
-  await open();
-  const stalled = page.getByRole('button', { name: /^Stalled stream/i }).first();
-  if (await stalled.count()) {
-    await stalled.click();
-    await page.waitForTimeout(250);
-    const retry = page.getByRole('button', { name: /retry with prior context/i }).first();
-    if (await retry.count()) {
-      await retry.click();
-      await page.waitForTimeout(550);
-      await screenshot('copilot-recovery-retry');
-    } else {
-      manifest.push({ name: 'copilot-recovery-retry', skipped: true, reason: 'Retry control unavailable' });
-    }
-  }
+  // Failure/recovery controls live in the second showcase section below the workspace.
+  await recoveryScenario('copilot-retrieval-failure', /^Retrieval failure/i);
+  await recoveryScenario('copilot-failed-tool', /^Failed tool/i);
+  await recoveryScenario('copilot-approval-rejection', /^Rejected approval/i);
+  await recoveryScenario('copilot-stalled-stream', /^Stalled stream/i);
+  await recoveryScenario('copilot-recovery-retry', /^Stalled stream/i, true);
 
   fs.writeFileSync(path.join(outputDir, 'manifest.json'), `${JSON.stringify(manifest, null, 2)}\n`);
   await browser.close();
