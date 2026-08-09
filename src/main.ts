@@ -1,4 +1,4 @@
 import { bootstrapApplication } from '@angular/platform-browser';
-import { AppComponent } from './app/app.component';
+import { ShowcaseShellComponent } from './app/showcase-shell.component';
 
-bootstrapApplication(AppComponent).catch(error => console.error(error));
+bootstrapApplication(ShowcaseShellComponent).catch(error => console.error(error));
