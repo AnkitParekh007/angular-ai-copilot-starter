@@ -21,6 +21,12 @@ Build a polished, recruiter-facing Angular AI copilot demo with streaming chat U
 - Confirm the UI exposes streaming, grounded evidence, tool planning, approval, execution state, failure, and recovery instead of collapsing everything into a chat bubble.
 - Use [Public Proof](docs/public-proof.md) for a 30-second / 3-minute / 15-minute review path.
 
+<p align="center">
+  <img src="docs/assets/screenshots/demo-walkthrough.gif" alt="Angular AI Copilot happy path, failure, and recovery walkthrough" width="960" />
+</p>
+
+<p align="center"><em>Real exact-branch capture: default workspace → happy-path flow → retrieval failure → rejected approval → stalled stream → retry with prior context. Mock-only and deterministic; no backend or provider execution is claimed.</em></p>
+
 The intended UX lifecycle is:
 
 `context → streaming → retrieval → citations → tool plan → approval → execution → result → retry/recovery`
