@@ -2,9 +2,6 @@ name: Capture Public Proof
 
 on:
   workflow_dispatch:
-  workflow_run:
-    workflows: ['Deploy GitHub Pages']
-    types: [completed]
   push:
     branches: ['agent/final-visual-proof']
     paths:
@@ -16,18 +13,30 @@ permissions:
 
 jobs:
   capture:
-    if: ${{ github.event_name == 'push' || github.event_name == 'workflow_dispatch' || github.event.workflow_run.conclusion == 'success' }}
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
         uses: actions/checkout@v4
-        with:
-          ref: ${{ github.event_name == 'push' && github.ref_name || github.event.repository.default_branch }}
 
-      - name: Set up Node.js 22
+      - name: Setup Node
         uses: actions/setup-node@v4
         with:
           node-version: 22
+          cache: npm
+
+      - name: Install app dependencies
+        run: npm ci
+
+      - name: Start exact branch demo locally
+        shell: bash
+        run: |
+          npm start -- --host 127.0.0.1 --port 4202 > /tmp/angular-copilot.log 2>&1 &
+          for attempt in $(seq 1 60); do
+            if curl --fail --silent http://127.0.0.1:4202/ >/dev/null; then exit 0; fi
+            sleep 2
+          done
+          cat /tmp/angular-copilot.log
+          exit 1
 
       - name: Install isolated Playwright runtime
         run: |
@@ -40,10 +49,10 @@ jobs:
       - name: Install GIF tooling
         run: sudo apt-get update && sudo apt-get install -y imagemagick gifsicle
 
-      - name: Capture deployed proof surfaces
+      - name: Capture exact branch proof states
         env:
           NODE_PATH: /tmp/public-proof-playwright/node_modules
-          CAPTURE_BASE_URL: https://ankitparekh007.github.io/angular-ai-copilot-starter/
+          CAPTURE_BASE_URL: http://127.0.0.1:4202/
           CAPTURE_OUTPUT_DIR: ${{ runner.temp }}/public-proof-captures
         run: node scripts/capture-public-proof.cjs
 
@@ -59,7 +68,6 @@ jobs:
             if [[ -s "$captures/$name.png" ]]; then frames+=("$captures/$name.png"); fi
           done
           if (( ${#frames[@]} < 5 )); then
-            echo "Need at least five real walkthrough frames; got ${#frames[@]}" >&2
             cat "$captures/manifest.json" >&2
             exit 1
           fi
@@ -68,7 +76,7 @@ jobs:
           test -s "$out"
           test "$(stat -c%s "$out")" -lt 8000000
 
-      - name: Upload public proof captures
+      - name: Upload proof captures
         uses: actions/upload-artifact@v4
         with:
           name: angular-ai-copilot-starter-public-proof
